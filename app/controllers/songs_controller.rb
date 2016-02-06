@@ -25,16 +25,10 @@ class SongsController < ApplicationController
   end
 
   def new
-    if params[:artist_id]
-      if Artist.exists?(params[:artist_id])
-        @nested = true
-        @song = Song.new(artist_id: params[:artist_id]) #so if it gets an artist through nested route, it sets it automatically
-      else
-        redirect_to artists_path, alert: "Artist not found."
-      end
+    if params[:artist_id] && !Artist.exists?(params[:artist_id])
+      redirect_to artists_path, alert: "Artist not found."
     else
-      @nested = true
-      @song = Song.new
+      @song = Song.new(artist_id: params[:artist_id]) #so if it gets an artist through nested route, it sets it automatically
     end
   end
 
